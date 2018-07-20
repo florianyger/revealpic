@@ -17,6 +17,11 @@ class Page
     private $id;
 
     /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $slug;
+
+    /**
      * @ORM\Column(type="integer")
      */
     private $viewCount = 0;
@@ -24,6 +29,18 @@ class Page
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 
     public function getViewCount(): ?int

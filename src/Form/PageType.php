@@ -12,6 +12,11 @@ class PageType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add(
+                'slug',
+                null ,
+                ['data' => uniqid()]
+            )
             ->add('viewCount')
         ;
     }

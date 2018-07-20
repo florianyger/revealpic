@@ -17,7 +17,9 @@ class ViewerController extends Controller
         $repository = $em->getRepository(Page::class);
 
         /** @var Page $page */
-        $page = $repository->find($slug);
+        $page = $repository->findOneBy(
+            ['slug' => $slug]
+        );
 
         if (!$page) {
             throw $this->createNotFoundException(
