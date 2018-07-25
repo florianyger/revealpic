@@ -1,0 +1,12 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        page_picture:
+            upload_destination: '%kernel.project_dir%/assets/pictures'
+            namer:
+                service: Vich\UploaderBundle\Naming\PropertyNamer
+                options: { property: 'slug'}
+            directory_namer:
+                service: vich_uploader.namer_directory_property
+                options: { property: 'slug', transliterate: true}

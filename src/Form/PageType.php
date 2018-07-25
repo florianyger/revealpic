@@ -6,6 +6,7 @@ use App\Entity\Page;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class PageType extends AbstractType
 {
@@ -17,7 +18,13 @@ class PageType extends AbstractType
                 null ,
                 ['data' => uniqid()]
             )
-            ->add('viewCount')
+            ->add(
+                'viewCount'
+            )
+            ->add(
+                'imageFile',
+                VichImageType::class
+            )
         ;
     }
 
