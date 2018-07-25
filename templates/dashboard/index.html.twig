@@ -1,9 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello {{ controller_name }}!{% endblock %}
-
 {% block body %}
-<div>
-    <a href="{{ path('page_index') }}">Créer une page</a>
-</div>
+    <div>
+        <a href="{{ path('page_index') }}">Créer une page</a>
+    </div>
+    <table>
+        <tr>
+            <th>Slug</th>
+            <th>Vues</th>
+            <th>Url</th>
+        </tr>
+        <tr>
+            {% for page in lastPages %}
+                <td>{{ page.slug }}</td>
+                <td>{{ page.viewCount }}</td>
+                <td><a href="viewer/{{ page.slug }}">goto</a></td>
+            {% endfor %}
+        </tr>
+    </table>
 {% endblock %}

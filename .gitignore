@@ -1,4 +1,5 @@
 .idea/
+assets/pictures
 
 ###> symfony/framework-bundle ###
 /.env
