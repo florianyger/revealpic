@@ -3,7 +3,7 @@ vich_uploader:
 
     mappings:
         page_picture:
-            upload_destination: '%kernel.project_dir%/assets/pictures'
+            upload_destination: '%app.pictures_directory_path%'
             namer:
                 service: Vich\UploaderBundle\Naming\PropertyNamer
                 options: { property: 'slug'}

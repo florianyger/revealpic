@@ -10,12 +10,12 @@
             <th>Vues</th>
             <th>Url</th>
         </tr>
-        <tr>
-            {% for page in lastPages %}
+        {% for page in lastPages %}
+            <tr>
                 <td>{{ page.slug }}</td>
                 <td>{{ page.viewCount }}</td>
                 <td><a href="viewer/{{ page.slug }}">goto</a></td>
-            {% endfor %}
-        </tr>
+            </tr>
+        {% endfor %}
     </table>
 {% endblock %}

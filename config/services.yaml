@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
+    app.pictures_directory_path: '%kernel.project_dir%/assets/pictures'
 
 services:
     # default configuration for services in *this* file
@@ -26,6 +27,10 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Service\PictureService:
+        bind:
+            $picturesDirectoryPath: '%app.pictures_directory_path%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

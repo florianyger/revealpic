@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Page;
 use App\Form\PageType;
 use App\Repository\PageRepository;
+use App\Service\PictureService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class PageController extends Controller
     /**
      * @Route("/new", name="page_new", methods="GET|POST")
      */
-    public function new(Request $request): Response
+    public function new(Request $request, PictureService $pictureService): Response
     {
         $page = new Page();
         $form = $this->createForm(PageType::class, $page);
@@ -36,6 +37,11 @@ class PageController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($page);
             $em->flush();
+
+            $pictureService->cutPictureInPieces(
+                $page->getSlug(),
+                $page->getImageName()
+            );
 
             return $this->redirectToRoute('page_index');
         }
