@@ -3,10 +3,12 @@
 namespace App\Service;
 
 use Intervention\Image\ImageManagerStatic as Image;
+use Symfony\Component\Finder\Finder;
 
 class PictureService
 {
     const NB_PIECE = 50;
+    const PIECE_PREFIX = '_piece';
 
     /**
      * @var string
@@ -41,10 +43,55 @@ class PictureService
 
         for ($i = 0; $i < $width; $i += $pieceSide) {
             for ($j = 0; $j < $height; $j += $pieceSide) {
-                $image->crop($pieceSide, $pieceSide, $i, $j)->save($pictureDirectoryPath . '/_piece-' . $i . '-' . $j . '.jpg');
+                $image
+                    ->crop($pieceSide, $pieceSide, $i, $j)
+                    ->save($pictureDirectoryPath . '/' . self::PIECE_PREFIX . '-' . $i . '-' . $j . '.jpg')
+                ;
 
                 $image->reset();
             }
         }
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return array
+     */
+    public function getPieces($slug)
+    {
+        $finder = new Finder();
+        $finder->files()->in($this->picturesDirectoryPath . '/' . $slug);
+
+        $pieces = [];
+        foreach ($finder as $file) {
+            if (false === strpos($file->getFilename(), self::PIECE_PREFIX)) {
+                continue;
+            }
+
+            $fileName = str_replace(self::PIECE_PREFIX . '-', '', $file->getFilename());
+            $fileName = preg_replace('/\.[A-Za-z1-9]*/', '', $fileName);
+            list($top, $left) = explode('-', $fileName);
+
+            $pieces[] = [
+                'top' => $top,
+                'left' => $left,
+                'slug' => $slug,
+                'name' => $file->getFilename()
+            ];
+        }
+
+        return $pieces;
+    }
+
+    /**
+     * @param string $slug
+     * @param $name
+     *
+     * @return string
+     */
+    public function getPiecePath($slug, $name)
+    {
+        return $this->picturesDirectoryPath . '/' . $slug . '/' . $name;
     }
 }

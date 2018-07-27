@@ -1,7 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<div>
-    {{ page.viewCount }}
-</div>
+    <div>
+        {{ page.viewCount }}
+    </div>
+    <div style="position:relative;">
+        {% for piece in pieces %}
+            <img src="{{ path('image_show', {'slug': piece.slug, 'name': piece.name}) }}" alt="" style="position:absolute;top:{{ piece.top }}px;left:{{ piece.left }}px;">
+        {% endfor %}
+    </div>
 {% endblock %}

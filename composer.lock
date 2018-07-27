@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b42d6fa959dbe8450396fe61453415b2",
+    "content-hash": "5568cf72bb93ceb21c0bf333b38e925c",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -2955,7 +2955,7 @@
         },
         {
             "name": "symfony/finder",
-            "version": "v4.1.1",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/finder.git",
