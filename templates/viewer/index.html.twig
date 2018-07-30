@@ -4,9 +4,13 @@
     <div>
         {{ page.viewCount }}
     </div>
-    <div style="position:relative;">
+    <div class="picture-container">
         {% for piece in pieces %}
-            <img src="{{ path('image_show', {'slug': piece.slug, 'name': piece.name}) }}" alt="" style="position:absolute;top:{{ piece.top }}px;left:{{ piece.left }}px;">
+            <img src="{{ path('image_show', {'slug': piece.slug, 'name': piece.name}) }}"
+                 alt="{{ piece.name }}"
+                 class="piece"
+                 style="top:{{ piece.top }}px;left:{{ piece.left }}px;"
+            >
         {% endfor %}
     </div>
 {% endblock %}
