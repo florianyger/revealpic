@@ -16,7 +16,7 @@ class PageType extends AbstractType
             ->add(
                 'slug',
                 null ,
-                ['data' => uniqid()]
+                ['data' => $this->generateSlug()]
             )
             ->add(
                 'viewCount'
@@ -33,5 +33,10 @@ class PageType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Page::class,
         ]);
+    }
+
+    private function generateSlug()
+    {
+        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
     }
 }

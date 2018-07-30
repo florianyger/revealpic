@@ -8,7 +8,7 @@ use Symfony\Component\Finder\Finder;
 class PictureService
 {
     const NB_PIECE = 50;
-    const PIECE_PREFIX = '_piece';
+    const PIECE_EXTENSION = '.jpg';
 
     /**
      * @var string
@@ -29,23 +29,28 @@ class PictureService
      */
     public function cutPictureInPieces($slug, $pictureName)
     {
-        $pictureDirectoryPath = $this->picturesDirectoryPath . '/' . $slug;
-        $picturePath = $pictureDirectoryPath . '/' . $pictureName;
+        $pictureDirectoryPath = join('/', [$this->picturesDirectoryPath, $slug]);
 
-        $image = Image::make($picturePath);
-        $image->backup();
+        $image = Image::make(
+            join('/', [$pictureDirectoryPath, $pictureName])
+        );
 
         $width = $image->getWidth();
         $height = $image->getHeight();
-        $area = $width * $height;
-        $pieceArea = $area / self::NB_PIECE;
-        $pieceSide = ceil(sqrt($pieceArea));
+        $pieceSide = ceil(
+            sqrt(
+                ($width * $height) / self::NB_PIECE
+            )
+        );
 
+        $image->backup();
         for ($i = 0; $i < $width; $i += $pieceSide) {
             for ($j = 0; $j < $height; $j += $pieceSide) {
+                $imageName = join('-', [$i, $j . self::PIECE_EXTENSION]);
+
                 $image
                     ->crop($pieceSide, $pieceSide, $i, $j)
-                    ->save($pictureDirectoryPath . '/' . self::PIECE_PREFIX . '-' . $i . '-' . $j . '.jpg')
+                    ->save( join('/', [$pictureDirectoryPath, $imageName]))
                 ;
 
                 $image->reset();
@@ -61,17 +66,18 @@ class PictureService
     public function getPieces($slug)
     {
         $finder = new Finder();
-        $finder->files()->in($this->picturesDirectoryPath . '/' . $slug);
+        $finder->files()->in(
+            join('/', [$this->picturesDirectoryPath, $slug])
+        );
 
         $pieces = [];
         foreach ($finder as $file) {
-            if (false === strpos($file->getFilename(), self::PIECE_PREFIX)) {
+            if (false !== strpos($file->getFilename(), $slug)) {
                 continue;
             }
 
-            $fileName = str_replace(self::PIECE_PREFIX . '-', '', $file->getFilename());
-            $fileName = preg_replace('/\.[A-Za-z1-9]*/', '', $fileName);
-            list($top, $left) = explode('-', $fileName);
+            $fileName = preg_replace('/\.\w*/', '', $file->getFilename());
+            list($left, $top) = explode('-', $fileName);
 
             $pieces[] = [
                 'top' => $top,
@@ -92,6 +98,6 @@ class PictureService
      */
     public function getPiecePath($slug, $name)
     {
-        return $this->picturesDirectoryPath . '/' . $slug . '/' . $name;
+        return join('/', [$this->picturesDirectoryPath, $slug, $name]);
     }
 }
