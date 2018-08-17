@@ -50,7 +50,7 @@ class PictureService
 
                 $image
                     ->crop($pieceSide, $pieceSide, $i, $j)
-                    ->save( join('/', [$pictureDirectoryPath, $imageName]))
+                    ->save(join('/', [$pictureDirectoryPath, $imageName]))
                 ;
 
                 $image->reset();

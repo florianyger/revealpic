@@ -8,11 +8,28 @@
         {% endblock %}
     </head>
     <body>
-        <div>
-            <a href="{{ path('dashboard') }}">Dashboard</a>
-        </div>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+            <a class="navbar-brand" href="{{ path('dashboard') }}">Revealpic</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        {% block body %}{% endblock %}
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <main class="container">
+            <div class="row">
+                <div class="col">
+                    {% block body %}{% endblock %}
+                </div>
+            </div>
+        </main>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>

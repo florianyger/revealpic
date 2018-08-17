@@ -1,3 +1,14 @@
+@import "~bootstrap/scss/bootstrap";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+
+body {
+    padding-top: 5rem;
+}
+
+.row {
+    margin-bottom: 1rem;
+}
+
 .picture-container {
     position:relative;
 }
