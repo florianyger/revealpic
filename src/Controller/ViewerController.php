@@ -16,7 +16,7 @@ class ViewerController extends Controller
     /**
      * @Route("/viewer/{slug}", name="viewer")
      */
-    public function index($slug, PictureService $pictureService)
+    public function index($slug)
     {
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository(Page::class);
@@ -37,8 +37,7 @@ class ViewerController extends Controller
         $em->flush();
 
         return $this->render('viewer/index.html.twig', [
-            'page' => $page,
-            'pieces' => $pictureService->getPieces($page->getSlug())
+            'page' => $page
         ]);
     }
 

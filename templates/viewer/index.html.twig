@@ -5,11 +5,11 @@
         {{ page.viewCount }}
     </div>
     <div class="picture-container">
-        {% for piece in pieces %}
-            <img src="{{ path('image_show', {'slug': piece.slug, 'name': piece.name}) }}"
-                 alt="{{ piece.name }}"
+        {% for piece in page.pieces if piece.revealed %}
+            <img src="{{ path('image_show', {'slug': page.slug, 'name': piece.filename}) }}"
+                 alt="{{ piece.filename }}"
                  class="piece"
-                 style="top:{{ piece.top }}px;left:{{ piece.left }}px;"
+                 style="top:{{ piece.topPos }}px;left:{{ piece.leftPos }}px;"
             >
         {% endfor %}
     </div>

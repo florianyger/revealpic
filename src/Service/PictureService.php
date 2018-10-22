@@ -2,8 +2,9 @@
 
 namespace App\Service;
 
+use App\Entity\Page;
+use App\Entity\Piece;
 use Intervention\Image\ImageManagerStatic as Image;
-use Symfony\Component\Finder\Finder;
 
 class PictureService
 {
@@ -24,15 +25,15 @@ class PictureService
     }
 
     /**
-     * @param string $slug
-     * @param string $pictureName
+     * @param Page $page
+     * @return array
      */
-    public function cutPictureInPieces($slug, $pictureName)
+    public function cutPictureInPieces($page) : array
     {
-        $pictureDirectoryPath = join('/', [$this->picturesDirectoryPath, $slug]);
+        $pictureDirectoryPath = join('/', [$this->picturesDirectoryPath, $page->getSlug()]);
 
         $image = Image::make(
-            join('/', [$pictureDirectoryPath, $pictureName])
+            join('/', [$pictureDirectoryPath, $page->getImageName()])
         );
 
         $width = $image->getWidth();
@@ -44,6 +45,7 @@ class PictureService
         );
 
         $image->backup();
+        $pieces = [];
         for ($i = 0; $i < $width; $i += $pieceSide) {
             for ($j = 0; $j < $height; $j += $pieceSide) {
                 $imageName = join('-', [$i, $j . self::PIECE_EXTENSION]);
@@ -53,38 +55,15 @@ class PictureService
                     ->save(join('/', [$pictureDirectoryPath, $imageName]))
                 ;
 
+                $pieces[] = (new Piece())
+                    ->setFilename($imageName)
+                    ->setPage($page)
+                    ->setLeftPos($i)
+                    ->setTopPos($j)
+                ;
+
                 $image->reset();
             }
-        }
-    }
-
-    /**
-     * @param string $slug
-     *
-     * @return array
-     */
-    public function getPieces($slug)
-    {
-        $finder = new Finder();
-        $finder->files()->in(
-            join('/', [$this->picturesDirectoryPath, $slug])
-        );
-
-        $pieces = [];
-        foreach ($finder as $file) {
-            if (false !== strpos($file->getFilename(), $slug)) {
-                continue;
-            }
-
-            $fileName = preg_replace('/\.\w*/', '', $file->getFilename());
-            list($left, $top) = explode('-', $fileName);
-
-            $pieces[] = [
-                'top' => $top,
-                'left' => $left,
-                'slug' => $slug,
-                'name' => $file->getFilename()
-            ];
         }
 
         return $pieces;

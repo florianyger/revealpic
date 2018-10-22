@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -57,6 +59,16 @@ class Page
      * @ORM\Column(type="integer")
      */
     private $viewCount = 0;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Piece", mappedBy="page", orphanRemoval=true)
+     */
+    private $pieces;
+
+    public function __construct()
+    {
+        $this->pieces = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -122,6 +134,37 @@ class Page
     public function setViewCount(int $viewCount): self
     {
         $this->viewCount = $viewCount;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Piece[]
+     */
+    public function getPieces(): Collection
+    {
+        return $this->pieces;
+    }
+
+    public function addPiece(Piece $piece): self
+    {
+        if (!$this->pieces->contains($piece)) {
+            $this->pieces[] = $piece;
+            $piece->setPage($this);
+        }
+
+        return $this;
+    }
+
+    public function removePiece(Piece $piece): self
+    {
+        if ($this->pieces->contains($piece)) {
+            $this->pieces->removeElement($piece);
+            // set the owning side to null (unless already changed)
+            if ($piece->getPage() === $this) {
+                $piece->setPage(null);
+            }
+        }
 
         return $this;
     }

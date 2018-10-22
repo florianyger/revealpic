@@ -38,10 +38,11 @@ class PageController extends Controller
             $em->persist($page);
             $em->flush();
 
-            $pictureService->cutPictureInPieces(
-                $page->getSlug(),
-                $page->getImageName()
-            );
+            $pieces = $pictureService->cutPictureInPieces($page);
+            foreach ($pieces as $piece) {
+                $em->persist($piece);
+            }
+            $em->flush();
 
             return $this->redirectToRoute('page_index');
         }
