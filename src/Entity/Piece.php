@@ -33,6 +33,16 @@ class Piece
     /**
      * @ORM\Column(type="integer")
      */
+    private $width;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $height;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $leftPos;
 
     /**
@@ -44,6 +54,11 @@ class Piece
      * @ORM\Column(type="boolean")
      */
     private $revealed = false;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbClickToReveal = 15;
 
     public function getId()
     {
@@ -70,6 +85,30 @@ class Piece
     public function setFilename($filename): self
     {
         $this->filename = $filename;
+
+        return $this;
+    }
+
+    public function getWidth(): ?int
+    {
+        return $this->width;
+    }
+
+    public function setWidth(int $width): self
+    {
+        $this->width = $width;
+
+        return $this;
+    }
+
+    public function getHeight(): ?int
+    {
+        return $this->height;
+    }
+
+    public function setHeight(int $height): self
+    {
+        $this->height = $height;
 
         return $this;
     }
@@ -108,5 +147,30 @@ class Piece
         $this->revealed = $revealed;
 
         return $this;
+    }
+
+    public function getNbClickToReveal(): ?int
+    {
+        return $this->nbClickToReveal;
+    }
+
+    public function setNbClickToReveal(?int $nbClickToReveal): self
+    {
+        $this->nbClickToReveal = $nbClickToReveal;
+
+        return $this;
+    }
+
+    public function addClickToReveal()
+    {
+        if ($this->revealed) {
+            return;
+        }
+
+        $this->nbClickToReveal--;
+
+        if (0 === $this->nbClickToReveal) {
+            $this->revealed = true;
+        }
     }
 }

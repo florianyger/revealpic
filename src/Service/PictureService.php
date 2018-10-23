@@ -58,6 +58,8 @@ class PictureService
                 $pieces[] = (new Piece())
                     ->setFilename($imageName)
                     ->setPage($page)
+                    ->setWidth($pieceSide)
+                    ->setHeight($pieceSide)
                     ->setLeftPos($i)
                     ->setTopPos($j)
                 ;

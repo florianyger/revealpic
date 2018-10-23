@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Page;
+use App\Entity\Piece;
 use App\Service\PictureService;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
@@ -39,6 +41,19 @@ class ViewerController extends Controller
         return $this->render('viewer/index.html.twig', [
             'page' => $page
         ]);
+    }
+
+    /**
+     * @Method({"POST"})
+     * @Route("/click/{piece}", name="click_on_piece", condition="request.isXmlHttpRequest()")
+     */
+    public function clickOnPiece(Piece $piece)
+    {
+        $piece->addClickToReveal();
+
+        $this->getDoctrine()->getManager()->flush();
+
+        return new Response('success');
     }
 
     /**
