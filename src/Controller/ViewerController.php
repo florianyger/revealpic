@@ -6,6 +6,7 @@ use App\Entity\Page;
 use App\Entity\Piece;
 use App\Service\PictureService;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
@@ -44,7 +45,7 @@ class ViewerController extends Controller
     }
 
     /**
-     * @Method({"POST"})
+     * @Method({"GET"})
      * @Route("/click/{piece}", name="click_on_piece", condition="request.isXmlHttpRequest()")
      */
     public function clickOnPiece(Piece $piece)
@@ -53,7 +54,17 @@ class ViewerController extends Controller
 
         $this->getDoctrine()->getManager()->flush();
 
-        return new Response('success');
+        return new JSONResponse(
+            [
+                'piece' => json_encode(
+                    [
+                        'id' => $piece->getId(),
+                        'nbClickToReveal' => $piece->getNbClickToReveal(),
+                        'revealed' => $piece->getRevealed()
+                    ]
+                )
+            ]
+        );
     }
 
     /**

@@ -3,28 +3,29 @@
 {% block body %}
     <div class="picture-container">
         {% for piece in page.pieces %}
-            {% if piece.revealed  %}
-                <img src="{{ path('image_show', {'slug': page.slug, 'name': piece.filename}) }}"
-                     alt="{{ piece.filename }}"
-                     class="piece"
-                     style="
-                             top:{{ piece.topPos }}px;
-                             left:{{ piece.leftPos }}px;
-                     "
-                >
-            {% else %}
-                <div class="piece unrevealed"
-                     style="
-                             width:{{ piece.width }}px;
-                             height:{{ piece.height }}px;
-                             top:{{ piece.topPos }}px;
-                             left:{{ piece.leftPos }}px;
-                      "
-                     data-url="{{ path('click_on_piece', {'piece': piece.id}) }}"
-                >
-                    <div class="nb-click">{{ piece.nbClickToReveal }} click left</div>
-                </div>
-            {% endif %}
+            <div class="piece"
+                 style="
+                         width:{{ piece.width }}px;
+                         height:{{ piece.height }}px;
+                         top:{{ piece.topPos }}px;
+                         left:{{ piece.leftPos }}px;
+                 "
+            >
+                {% if piece.revealed %}
+                    <img src="{{ path('image_show', {'slug': page.slug, 'name': piece.filename}) }}"
+                         alt="{{ piece.filename }}"
+                    >
+                {% else %}
+                    <div class="unrevealed"
+                         data-url="{{ path('click_on_piece', {'piece': piece.id}) }}"
+                         data-id="{{ piece.id }}"
+                    >
+                        <div class="nb-click">
+                            <span class="count">{{ piece.nbClickToReveal }}</span> click left
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
         {% endfor %}
     </div>
 {% endblock %}

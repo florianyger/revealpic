@@ -11,28 +11,30 @@ body {
 
 .picture-container {
     position: relative;
-}
 
-.piece {
-    position: absolute;
+    .piece {
+        position: absolute;
 
-    &.unrevealed {
-        background-color: lightgrey;
-
-        .nb-click {
-            display: none;
-            position: absolute;
-            text-align: center;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 100%;
-        }
-
-        &:hover {
-            opacity: 0.3;
+        .unrevealed {
+            background-color: lightgrey;
+            position: relative;
+            height: 100%;
 
             .nb-click {
-                display: block;
+                display: none;
+                position: absolute;
+                text-align: center;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 100%;
+            }
+
+            &:hover {
+                opacity: 0.3;
+
+                .nb-click {
+                    display: block;
+                }
             }
         }
     }
