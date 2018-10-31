@@ -137,7 +137,7 @@ class Piece
         return $this;
     }
 
-    public function getRevealed(): ?bool
+    public function isRevealed(): ?bool
     {
         return $this->revealed;
     }

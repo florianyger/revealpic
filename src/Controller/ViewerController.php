@@ -52,6 +52,11 @@ class ViewerController extends Controller
     {
         $piece->addClickToReveal();
 
+        $imageUrl = null;
+        if ($piece->isRevealed()) {
+            $imageUrl = $this->generateUrl('image_show', ['slug' => $piece->getPage()->getSlug(), 'name' => $piece->getFilename()]);
+        }
+
         $this->getDoctrine()->getManager()->flush();
 
         return new JSONResponse(
@@ -60,7 +65,8 @@ class ViewerController extends Controller
                     [
                         'id' => $piece->getId(),
                         'nbClickToReveal' => $piece->getNbClickToReveal(),
-                        'revealed' => $piece->getRevealed()
+                        'revealed' => $piece->isRevealed(),
+                        'imageUrl' => $imageUrl
                     ]
                 )
             ]

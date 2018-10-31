@@ -14,7 +14,8 @@ $(document).ready(function() {
                 pieceBlock.find('.count').html(piece.nbClickToReveal);
 
                 if (piece.revealed) {
-                    pieceBlock.removeClass('unrevealed');
+                    pieceBlock.remove('unrevealed');
+                    pieceBlock.append('<img src="' + piece.imageUrl + '" alt="' + piece.filename + '">');
                 }
             }
         })
