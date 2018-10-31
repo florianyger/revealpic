@@ -1,4 +1,4 @@
-var $ = require('jquery');
+let $ = require('jquery');
 
 $(document).ready(function() {
     $('.unrevealed').click( function(){
@@ -8,8 +8,8 @@ $(document).ready(function() {
             dataType: 'json',
             async: true,
             success : function(data){
-                var piece = JSON.parse(data.piece);
-                var pieceBlock = $('[data-id="' + piece.id + '"]');
+                let piece = JSON.parse(data.piece);
+                let pieceBlock = $('[data-id="' + piece.id + '"]');
 
                 pieceBlock.find('.count').html(piece.nbClickToReveal);
 
