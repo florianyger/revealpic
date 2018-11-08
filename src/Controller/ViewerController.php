@@ -64,9 +64,10 @@ class ViewerController extends Controller
                 'piece' => json_encode(
                     [
                         'id' => $piece->getId(),
+                        'filename' => $piece->getFilename(),
+                        'imageUrl' => $imageUrl,
                         'nbClickToReveal' => $piece->getNbClickToReveal(),
-                        'revealed' => $piece->isRevealed(),
-                        'imageUrl' => $imageUrl
+                        'revealed' => $piece->isRevealed()
                     ]
                 )
             ]

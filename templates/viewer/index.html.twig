@@ -10,6 +10,7 @@
                          top:{{ piece.topPos }}px;
                          left:{{ piece.leftPos }}px;
                  "
+                 data-id="{{ piece.id }}"
             >
                 {% if piece.revealed %}
                     <img src="{{ path('image_show', {'slug': page.slug, 'name': piece.filename}) }}"
@@ -18,7 +19,6 @@
                 {% else %}
                     <div class="unrevealed"
                          data-url="{{ path('click_on_piece', {'piece': piece.id}) }}"
-                         data-id="{{ piece.id }}"
                     >
                         <div class="nb-click">
                             <span class="count">{{ piece.nbClickToReveal }}</span> click left
