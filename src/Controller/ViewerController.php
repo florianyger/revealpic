@@ -14,10 +14,13 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
+/**
+ * @Route("/viewer")
+ */
 class ViewerController extends Controller
 {
     /**
-     * @Route("/viewer/{slug}", name="viewer")
+     * @Route("/{slug}", name="viewer")
      */
     public function index($slug)
     {
