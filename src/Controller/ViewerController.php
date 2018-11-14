@@ -6,6 +6,7 @@ use App\Entity\Page;
 use App\Entity\Piece;
 use App\Service\PictureService;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,25 +23,17 @@ class ViewerController extends Controller
     /**
      * @Route("/{slug}", name="viewer")
      */
-    public function index($slug)
+    public function index(Page $page)
     {
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository(Page::class);
-
-        /** @var Page $page */
-        $page = $repository->findOneBy(
-            ['slug' => $slug]
-        );
-
         if (!$page) {
             throw $this->createNotFoundException(
-                'No page found for slug ' . $slug
+                'No page found for slug ' . $page->getSlug()
             );
         }
 
         $page->setViewCount($page->getViewCount() + 1);
 
-        $em->flush();
+        $this->getDoctrine()->getManager()->flush();
 
         return $this->render('viewer/index.html.twig', [
             'page' => $page
@@ -57,7 +50,7 @@ class ViewerController extends Controller
 
         $imageUrl = null;
         if ($piece->isRevealed()) {
-            $imageUrl = $this->generateUrl('image_show', ['slug' => $piece->getPage()->getSlug(), 'name' => $piece->getFilename()]);
+            $imageUrl = $this->generateUrl('show_piece', ['piece' => $piece->getId()]);
         }
 
         $this->getDoctrine()->getManager()->flush();
@@ -78,22 +71,22 @@ class ViewerController extends Controller
     }
 
     /**
-     * @param string $slug
-     * @param string $name
-     *
-     * @return Response
      * @Method({"GET"})
-     * @Route("/{slug}/{name}", name="image_show")
+     * @Route("/show/{piece}", name="show_piece")
      *
      */
-    public function showAction($slug, $name, PictureService $pictureService)
+    public function showAction(Piece $piece, PictureService $pictureService)
     {
-        $response = new BinaryFileResponse($pictureService->getPiecePath($slug, $name));
+        if (!$piece->isRevealed()) {
+            throw new AccessDeniedException($piece->getId());
+        }
+
+        $response = new BinaryFileResponse($pictureService->getPiecePath($piece));
         $response->trustXSendfileTypeHeader();
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_INLINE,
-            $name,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $name)
+            $piece->getFilename(),
+            iconv('UTF-8', 'ASCII//TRANSLIT', $piece->getFilename())
         );
 
         return $response;

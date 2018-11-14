@@ -13,7 +13,7 @@
                  data-id="{{ piece.id }}"
             >
                 {% if piece.revealed %}
-                    <img src="{{ path('image_show', {'slug': page.slug, 'name': piece.filename}) }}"
+                    <img src="{{ path('show_piece', {'piece': piece.id}) }}"
                          alt="{{ piece.filename }}"
                     >
                 {% else %}
