@@ -126,6 +126,16 @@ class Page
         return $this->imageSize;
     }
 
+    public function getUpdatedAt(): \DateTime
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTime $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
     public function getViewCount(): ?int
     {
         return $this->viewCount;
@@ -167,5 +177,10 @@ class Page
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getSlug();
     }
 }

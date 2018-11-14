@@ -173,4 +173,9 @@ class Piece
             $this->revealed = true;
         }
     }
+
+    public function __toString()
+    {
+        return $this->getFilename();
+    }
 }

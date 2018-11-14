@@ -1,0 +1,11 @@
+easy_admin:
+    site_name: 'Revealpic'
+    entities:
+        Page:
+            class: App\Entity\Page
+            label: 'Page'
+        Piece:
+            class: App\Entity\Piece
+            label: 'Piece'
+    list:
+        title: 'Liste des %%entity_label%%(s)'

@@ -3,8 +3,9 @@
     "license": "proprietary",
     "require": {
         "php": "^7.1.3",
-        "ext-json": "*",
         "ext-iconv": "*",
+        "ext-json": "*",
+        "easycorp/easyadmin-bundle": "^1.17",
         "intervention/image": "^2.4",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "^4.1",
