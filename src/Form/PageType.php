@@ -15,7 +15,7 @@ class PageType extends AbstractType
         $builder
             ->add(
                 'slug',
-                null ,
+                null,
                 ['data' => $this->generateSlug()]
             )
             ->add(

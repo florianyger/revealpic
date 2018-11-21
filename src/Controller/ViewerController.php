@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -27,7 +26,7 @@ class ViewerController extends Controller
     {
         if (!$page) {
             throw $this->createNotFoundException(
-                'No page found for slug ' . $page->getSlug()
+                'No page found for slug '.$page->getSlug()
             );
         }
 
@@ -36,7 +35,7 @@ class ViewerController extends Controller
         $this->getDoctrine()->getManager()->flush();
 
         return $this->render('viewer/index.html.twig', [
-            'page' => $page
+            'page' => $page,
         ]);
     }
 
@@ -63,9 +62,9 @@ class ViewerController extends Controller
                         'filename' => $piece->getFilename(),
                         'imageUrl' => $imageUrl,
                         'nbClickToReveal' => $piece->getNbClickToReveal(),
-                        'revealed' => $piece->isRevealed()
+                        'revealed' => $piece->isRevealed(),
                     ]
-                )
+                ),
             ]
         );
     }
@@ -73,7 +72,6 @@ class ViewerController extends Controller
     /**
      * @Method({"GET"})
      * @Route("/show/{piece}", name="show_piece")
-     *
      */
     public function showAction(Piece $piece, PictureService $pictureService)
     {

@@ -16,7 +16,7 @@ class RegistrationController extends AbstractController
     /**
      * @Route("/register", name="user_registration")
      *
-     * @param Request $request
+     * @param Request                      $request
      * @param UserPasswordEncoderInterface $passwordEncoder
      *
      * @return RedirectResponse|Response
@@ -28,7 +28,6 @@ class RegistrationController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
             $user->setPassword($password);
 
@@ -42,7 +41,7 @@ class RegistrationController extends AbstractController
         return $this->render(
             'registration/register.html.twig',
             [
-                'form' => $form->createView()
+                'form' => $form->createView(),
             ]
         );
     }

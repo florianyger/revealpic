@@ -6,6 +6,7 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "easycorp/easyadmin-bundle": "^1.17",
+        "friendsofphp/php-cs-fixer": "^2.13",
         "intervention/image": "^2.4",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/asset": "^4.1",

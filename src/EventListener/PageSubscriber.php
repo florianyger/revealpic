@@ -29,7 +29,7 @@ class PageSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
-            Events::postPersist
+            Events::postPersist,
         ];
     }
 

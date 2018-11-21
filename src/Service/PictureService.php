@@ -26,9 +26,10 @@ class PictureService
 
     /**
      * @param Page $page
+     *
      * @return array
      */
-    public function cutPictureInPieces($page) : array
+    public function cutPictureInPieces($page): array
     {
         $pictureDirectoryPath = join('/', [$this->picturesDirectoryPath, $page->getSlug()]);
 
@@ -48,7 +49,7 @@ class PictureService
         $pieces = [];
         for ($i = 0; $i < $width; $i += $pieceSide) {
             for ($j = 0; $j < $height; $j += $pieceSide) {
-                $imageName = join('-', [$i, $j . self::PIECE_EXTENSION]);
+                $imageName = join('-', [$i, $j.self::PIECE_EXTENSION]);
 
                 $image
                     ->crop($pieceSide, $pieceSide, $i, $j)

@@ -44,7 +44,7 @@ class Page
     /**
      * @ORM\Column(type="integer")
      *
-     * @var integer
+     * @var int
      */
     private $imageSize;
 

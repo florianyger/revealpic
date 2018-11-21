@@ -3,9 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PieceRepository")
@@ -167,7 +164,7 @@ class Piece
             return;
         }
 
-        $this->nbClickToReveal--;
+        --$this->nbClickToReveal;
 
         if (0 === $this->nbClickToReveal) {
             $this->revealed = true;
