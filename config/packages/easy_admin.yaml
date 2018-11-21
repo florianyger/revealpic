@@ -9,7 +9,7 @@ easy_admin:
             label: 'Page'
             list:
                 fields:
-                    - slug
+                    - { property: 'slug', template: 'admin/slug.html.twig' }
                     - { property: 'imageFile', template: 'admin/vich.uploader_image.html.twig' }
                     - updatedAt
                     - viewCount
@@ -20,6 +20,7 @@ easy_admin:
         Piece:
             class: App\Entity\Piece
             label: 'Piece'
+            disabled_actions: ['new']
     list:
         title: 'Liste des %%entity_label%%(s)'
     formats:
