@@ -3,6 +3,7 @@ vich_uploader:
 
     mappings:
         page_picture:
+            uri_prefix: '/admin/show'
             upload_destination: '%app.pictures_directory_path%'
             namer:
                 service: Vich\UploaderBundle\Naming\PropertyNamer

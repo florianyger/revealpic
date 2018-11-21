@@ -1,34 +1,5 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            <a href="{{ path('page_index') }}" role="button" class="btn btn-primary">
-                <i class="fas fa-plus-circle"></i>
-                Créer une page
-            </a>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <table class="table table-bordered table-striped table-sm">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Slug</th>
-                        <th>Vues</th>
-                        <th>Url</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for page in lastPages %}
-                        <tr>
-                            <td>{{ page.slug }}</td>
-                            <td>{{ page.viewCount }}</td>
-                            <td><a href="viewer/{{ page.slug }}">goto</a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
+
 {% endblock %}

@@ -67,6 +67,8 @@ class Page
 
     public function __construct()
     {
+        $this->slug = $this->generateSlug();
+        $this->updatedAt = new \DateTime();
         $this->pieces = new ArrayCollection();
     }
 
@@ -182,5 +184,10 @@ class Page
     public function __toString()
     {
         return $this->getSlug();
+    }
+
+    private function generateSlug()
+    {
+        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
     }
 }

@@ -7,8 +7,22 @@ easy_admin:
         Page:
             class: App\Entity\Page
             label: 'Page'
+            list:
+                fields:
+                    - slug
+                    - { property: 'imageFile', template: 'admin/vich.uploader_image.html.twig' }
+                    - updatedAt
+                    - viewCount
+                    - pieces
+            form:
+                fields:
+                    - { property: 'imageFile', type: 'vich_image' }
         Piece:
             class: App\Entity\Piece
             label: 'Piece'
     list:
         title: 'Liste des %%entity_label%%(s)'
+    formats:
+        date:     'd/m/Y'
+        time:     'H:i'
+        datetime: 'd/m/Y H:i:s'
