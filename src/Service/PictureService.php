@@ -71,14 +71,4 @@ class PictureService
 
         return $pieces;
     }
-
-    /**
-     * @param Piece $piece
-     *
-     * @return string
-     */
-    public function getPiecePath(Piece $piece)
-    {
-        return join('/', [$this->picturesDirectoryPath, $piece->getPage()->getSlug(), $piece->getFilename()]);
-    }
 }

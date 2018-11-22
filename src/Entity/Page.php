@@ -150,6 +150,13 @@ class Page
         return $this;
     }
 
+    public function addViewCount(): self
+    {
+        ++$this->viewCount;
+
+        return $this;
+    }
+
     /**
      * @return Collection|Piece[]
      */

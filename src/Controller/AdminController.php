@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
+use App\Utils\RenderImageTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -14,26 +14,23 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class AdminController extends Controller
 {
+    use RenderImageTrait;
+
     /**
      * @Method({"GET"})
      * @Route("/show/{slug}/{filename}", name="show_image")
+     *
+     * @param string $slug
+     * @param string $filename
+     *
+     * @return BinaryFileResponse
      */
     public function showAction($slug, $filename)
     {
-        $filePath = join('/', [$this->container->getParameter('app.pictures_directory_path'), $slug, $filename]);
-
         if (!$this->getUser()->isAdmin()) {
-            throw new AccessDeniedException($filePath);
+            throw new AccessDeniedException($slug);
         }
 
-        $response = new BinaryFileResponse($filePath);
-        $response->trustXSendfileTypeHeader();
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $filename,
-            iconv('UTF-8', 'ASCII//TRANSLIT', $filename)
-        );
-
-        return $response;
+        return $this->renderImage($slug, $filename);
     }
 }

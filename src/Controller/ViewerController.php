@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Page;
 use App\Entity\Piece;
-use App\Service\PictureService;
+use App\Utils\RenderImageTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -19,8 +19,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class ViewerController extends Controller
 {
+    use RenderImageTrait;
+
     /**
      * @Route("/{slug}", name="viewer")
+     *
+     * @param Page $page
+     *
+     * @return Response
      */
     public function index(Page $page)
     {
@@ -30,7 +36,7 @@ class ViewerController extends Controller
             );
         }
 
-        $page->setViewCount($page->getViewCount() + 1);
+        $page->addViewCount();
 
         $this->getDoctrine()->getManager()->flush();
 
@@ -42,6 +48,10 @@ class ViewerController extends Controller
     /**
      * @Method({"GET"})
      * @Route("/click/{piece}", name="click_on_piece", condition="request.isXmlHttpRequest()")
+     *
+     * @param Piece $piece
+     *
+     * @return JsonResponse
      */
     public function clickOnPiece(Piece $piece)
     {
@@ -72,21 +82,17 @@ class ViewerController extends Controller
     /**
      * @Method({"GET"})
      * @Route("/show/{piece}", name="show_piece")
+     *
+     * @param Piece $piece
+     *
+     * @return BinaryFileResponse
      */
-    public function showAction(Piece $piece, PictureService $pictureService)
+    public function showAction(Piece $piece)
     {
         if (!$piece->isRevealed()) {
             throw new AccessDeniedException($piece->getId());
         }
 
-        $response = new BinaryFileResponse($pictureService->getPiecePath($piece));
-        $response->trustXSendfileTypeHeader();
-        $response->setContentDisposition(
-            ResponseHeaderBag::DISPOSITION_INLINE,
-            $piece->getFilename(),
-            iconv('UTF-8', 'ASCII//TRANSLIT', $piece->getFilename())
-        );
-
-        return $response;
+        return $this->renderImage($piece->getPage()->getSlug(), $piece->getFilename());
     }
 }
