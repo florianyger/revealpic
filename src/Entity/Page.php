@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 /**
@@ -28,6 +29,11 @@ class Page
     private $slug;
 
     /**
+     * @Assert\Image(
+     *     minWidth = 400,
+     *     minHeight = 200
+     * )
+     *
      * @Vich\UploadableField(mapping="page_picture", fileNameProperty="imageName", size="imageSize")
      *
      * @var File

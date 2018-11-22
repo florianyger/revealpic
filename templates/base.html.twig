@@ -16,8 +16,12 @@
 
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    {% set route = app.request.attributes.get('_route') %}
+                    <li class="nav-item {% if route is same as('home') %}active{% endif %}">
                         <a class="nav-link" href="{{ path('home') }}">Home</a>
+                    </li>
+                    <li class="nav-item {% if route is same as('create_page') %}active{% endif %}">
+                        <a class="nav-link" href="{{ path('create_page') }}">Create a Page</a>
                     </li>
                 </ul>
             </div>

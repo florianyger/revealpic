@@ -14,16 +14,10 @@ class PageType extends AbstractType
     {
         $builder
             ->add(
-                'slug',
-                null,
-                ['data' => $this->generateSlug()]
-            )
-            ->add(
-                'viewCount'
-            )
-            ->add(
                 'imageFile',
-                VichImageType::class
+                VichImageType::class, [
+                    'label' => 'Picture to reveal',
+                ]
             )
         ;
     }
@@ -33,10 +27,5 @@ class PageType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Page::class,
         ]);
-    }
-
-    private function generateSlug()
-    {
-        return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);
     }
 }
