@@ -4,12 +4,15 @@ namespace App\Service;
 
 use App\Entity\Page;
 use App\Entity\Piece;
+use Intervention\Image\Constraint;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class PictureService
 {
     const NB_PIECE = 50;
     const PIECE_EXTENSION = '.jpg';
+    const MAX_PICTURE_WIDTH = 1000;
+    const MAX_PICTURE_HEIGHT = 800;
 
     /**
      * @var string
@@ -35,7 +38,11 @@ class PictureService
 
         $image = Image::make(
             join('/', [$pictureDirectoryPath, $page->getImageName()])
-        );
+        )->widen(self::MAX_PICTURE_WIDTH, function (Constraint $constraint) {
+            $constraint->upsize();
+        })->heighten(self::MAX_PICTURE_HEIGHT, function (Constraint $constraint) {
+            $constraint->upsize();
+        });
 
         $width = $image->getWidth();
         $height = $image->getHeight();
