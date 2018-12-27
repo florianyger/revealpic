@@ -9,7 +9,8 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class PictureService
 {
-    const NB_PIECE = 50;
+    const NB_COLUMN = 7;
+    const NB_LINE = 7;
     const PIECE_EXTENSION = '.jpg';
     const MAX_PICTURE_WIDTH = 1000;
     const MAX_PICTURE_HEIGHT = 800;
@@ -44,32 +45,36 @@ class PictureService
             $constraint->upsize();
         });
 
-        $width = $image->getWidth();
-        $height = $image->getHeight();
-        $pieceSide = ceil(
-            sqrt(
-                ($width * $height) / self::NB_PIECE
-            )
-        );
+        $imageWidth = $image->getWidth();
+        $imageHeight = $image->getHeight();
+        $pieceWidth = ceil($imageWidth / self::NB_COLUMN);
+        $pieceHeight = ceil($imageHeight / self::NB_LINE);
 
         $image->backup();
         $pieces = [];
-        for ($i = 0; $i < $width; $i += $pieceSide) {
-            for ($j = 0; $j < $height; $j += $pieceSide) {
-                $imageName = join('-', [$i, $j.self::PIECE_EXTENSION]);
+        for ($i = 0; $i < self::NB_COLUMN; $i++) {
+            $leftPos = $i * $pieceWidth;
+
+            for ($j = 0; $j < self::NB_LINE; $j++) {
+                $topPos = $j * $pieceHeight;
+
+                $imageName = join('-', [$leftPos, $topPos . self::PIECE_EXTENSION]);
+
+                $width = min($pieceWidth, $imageWidth - $leftPos);
+                $height = min($pieceHeight, $imageHeight - $topPos);
 
                 $image
-                    ->crop($pieceSide, $pieceSide, $i, $j)
+                    ->crop($width, $height, $leftPos, $topPos)
                     ->save(join('/', [$pictureDirectoryPath, $imageName]))
                 ;
 
                 $pieces[] = (new Piece())
                     ->setFilename($imageName)
                     ->setPage($page)
-                    ->setWidth($pieceSide)
-                    ->setHeight($pieceSide)
-                    ->setLeftPos($i)
-                    ->setTopPos($j)
+                    ->setWidth($width)
+                    ->setHeight($height)
+                    ->setLeftPos($leftPos)
+                    ->setTopPos($topPos)
                 ;
 
                 $image->reset();
