@@ -13,8 +13,9 @@ $(document).ready(function() {
 
                 pieceBlock.find('.count').html(piece.nbClickToReveal);
 
-                if (piece.revealed) {
-                    pieceBlock.find('.unrevealed').remove();
+                let unrevealedBlock = pieceBlock.find('.unrevealed');
+                if (piece.revealed && unrevealedBlock.length) {
+                    unrevealedBlock.remove();
                     pieceBlock.append(
                         `<img src="${piece.imageUrl}" alt="${piece.filename}">`
                     );
