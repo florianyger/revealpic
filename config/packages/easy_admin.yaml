@@ -10,13 +10,13 @@ easy_admin:
             list:
                 fields:
                     - { property: 'slug', template: 'admin/slug.html.twig' }
-                    - { property: 'imageFile', template: 'admin/vich.uploader_image.html.twig' }
+                    - { property: 'pictureFile', template: 'admin/vich.uploader_image.html.twig' }
                     - updatedAt
                     - viewCount
                     - pieces
             form:
                 fields:
-                    - { property: 'imageFile', type: 'vich_image' }
+                    - { property: 'pictureFile', type: 'vich_image' }
         Piece:
             class: App\Entity\Piece
             label: 'Piece'

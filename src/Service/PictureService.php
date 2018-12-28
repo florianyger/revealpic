@@ -6,7 +6,8 @@ use App\Entity\Page;
 use App\Entity\Piece;
 use App\Utils\PictureTrait;
 use Intervention\Image\Constraint;
-use Intervention\Image\ImageManagerStatic as Image;
+use Intervention\Image\Image;
+use Intervention\Image\ImageManagerStatic as ImageManager;
 
 class PictureService
 {
@@ -36,22 +37,16 @@ class PictureService
      *
      * @return array
      */
-    public function cutPictureInPieces($page): array
+    public function cutPagePictureInPieces(Page $page): array
     {
-        $image = Image::make(
-            $this->getPiecePicturePath($page->getSlug(), $page->getImageName())
-        )->widen(self::MAX_PICTURE_WIDTH, function (Constraint $constraint) {
-            $constraint->upsize();
-        })->heighten(self::MAX_PICTURE_HEIGHT, function (Constraint $constraint) {
-            $constraint->upsize();
-        });
+        $picture = $this->createSizedPicture($page->getSlug(), $page->getPictureName());
 
-        $imageWidth = $image->getWidth();
-        $imageHeight = $image->getHeight();
-        $pieceWidth = ceil($imageWidth / self::NB_COLUMN);
-        $pieceHeight = ceil($imageHeight / self::NB_LINE);
+        $pictureWidth = $picture->getWidth();
+        $pictureHeight = $picture->getHeight();
+        $pieceWidth = ceil($pictureWidth / self::NB_COLUMN);
+        $pieceHeight = ceil($pictureHeight / self::NB_LINE);
 
-        $image->backup();
+        $picture->backup();
         $pieces = [];
         for ($i = 0; $i < self::NB_COLUMN; $i++) {
             $leftPos = $i * $pieceWidth;
@@ -59,18 +54,18 @@ class PictureService
             for ($j = 0; $j < self::NB_LINE; $j++) {
                 $topPos = $j * $pieceHeight;
 
-                $imageName = join('-', [$leftPos, $topPos . self::PIECE_EXTENSION]);
+                $pictureName = join('-', [$leftPos, $topPos . self::PIECE_EXTENSION]);
 
-                $width = min($pieceWidth, $imageWidth - $leftPos);
-                $height = min($pieceHeight, $imageHeight - $topPos);
+                $width = min($pieceWidth, $pictureWidth - $leftPos);
+                $height = min($pieceHeight, $pictureHeight - $topPos);
 
-                $image
+                $picture
                     ->crop($width, $height, $leftPos, $topPos)
-                    ->save($this->getPiecePicturePath($page->getSlug(), $imageName))
+                    ->save($this->getPiecePicturePath($page->getSlug(), $pictureName))
                 ;
 
                 $pieces[] = (new Piece())
-                    ->setFilename($imageName)
+                    ->setFilename($pictureName)
                     ->setPage($page)
                     ->setWidth($width)
                     ->setHeight($height)
@@ -78,10 +73,30 @@ class PictureService
                     ->setTopPos($topPos)
                 ;
 
-                $image->reset();
+                $picture->reset();
             }
         }
 
         return $pieces;
+    }
+
+    /**
+     * @param string $slug
+     * @param string $filename
+     *
+     * @return Image
+     */
+    private function createSizedPicture($slug, $filename): Image
+    {
+        $noUpsize = function (Constraint $constraint) {
+            $constraint->upsize();
+        };
+
+        return ImageManager::make(
+            $this->getPiecePicturePath($slug, $filename)
+        )
+            ->widen(self::MAX_PICTURE_WIDTH, $noUpsize)
+            ->heighten(self::MAX_PICTURE_HEIGHT, $noUpsize)
+        ;
     }
 }

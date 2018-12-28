@@ -57,9 +57,9 @@ class ViewerController extends Controller
     {
         $piece->addClickToReveal();
 
-        $imageUrl = null;
+        $pictureUrl = null;
         if ($piece->isRevealed()) {
-            $imageUrl = $this->generateUrl('show_piece', ['piece' => $piece->getId()]);
+            $pictureUrl = $this->generateUrl('show_piece', ['piece' => $piece->getId()]);
         }
 
         $this->getDoctrine()->getManager()->flush();
@@ -70,7 +70,7 @@ class ViewerController extends Controller
                     [
                         'id' => $piece->getId(),
                         'filename' => $piece->getFilename(),
-                        'imageUrl' => $imageUrl,
+                        'pictureUrl' => $pictureUrl,
                         'nbClickToReveal' => $piece->getNbClickToReveal(),
                         'revealed' => $piece->isRevealed(),
                     ]

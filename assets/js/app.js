@@ -17,7 +17,9 @@ $(document).ready(function() {
                 if (piece.revealed && unrevealedBlock.length) {
                     unrevealedBlock.remove();
                     pieceBlock.append(
-                        `<img src="${piece.imageUrl}" alt="${piece.filename}">`
+                        `<img src="${piece.pictureUrl}" alt="${
+                            piece.filename
+                        }">`
                     );
                 }
             }

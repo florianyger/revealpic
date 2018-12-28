@@ -43,7 +43,7 @@ class PageSubscriber implements EventSubscriber
         if ($entity instanceof Page) {
             $em = $args->getObjectManager();
 
-            $pieces = $this->pictureService->cutPictureInPieces($entity);
+            $pieces = $this->pictureService->cutPagePictureInPieces($entity);
             foreach ($pieces as $piece) {
                 $em->persist($piece);
             }

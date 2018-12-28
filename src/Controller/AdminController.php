@@ -18,7 +18,7 @@ class AdminController extends Controller
 
     /**
      * @Method({"GET"})
-     * @Route("/show/{slug}/{filename}", name="show_image")
+     * @Route("/show/{slug}/{filename}", name="show_picture")
      *
      * @param string $slug
      * @param string $filename

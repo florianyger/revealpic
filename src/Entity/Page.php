@@ -34,25 +34,25 @@ class Page
      *     minHeight = 200
      * )
      *
-     * @Vich\UploadableField(mapping="page_picture", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="page_picture", fileNameProperty="pictureName", size="pictureSize")
      *
      * @var File
      */
-    private $imageFile;
+    private $pictureFile;
 
     /**
      * @ORM\Column(type="string", length=255)
      *
      * @var string
      */
-    private $imageName;
+    private $pictureName;
 
     /**
      * @ORM\Column(type="integer")
      *
      * @var int
      */
-    private $imageSize;
+    private $pictureSize;
 
     /**
      * @ORM\Column(type="datetime")
@@ -71,6 +71,9 @@ class Page
      */
     private $pieces;
 
+    /**
+     * @throws \Exception
+     */
     public function __construct()
     {
         $this->slug = $this->generateSlug();
@@ -78,16 +81,27 @@ class Page
         $this->pieces = new ArrayCollection();
     }
 
+    /**
+     * @return int
+     */
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
+    /**
+     * @param string $slug
+     *
+     * @return Page
+     */
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
@@ -96,59 +110,88 @@ class Page
     }
 
     /**
-     * @param File|UploadedFile $image
+     * @return File|UploadedFile|null
+     */
+    public function getPictureFile(): ?File
+    {
+        return $this->pictureFile;
+    }
+
+    /**
+     * @param File|UploadedFile $picture
      *
      * @throws \Exception
      */
-    public function setImageFile(?File $image = null): void
+    public function setPictureFile(?File $picture = null): void
     {
-        $this->imageFile = $image;
+        $this->pictureFile = $picture;
 
-        if (null !== $image) {
+        if (null !== $picture) {
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
 
-    public function getImageFile(): ?File
+    /**
+     * @return string|null
+     */
+    public function getPictureName(): ?string
     {
-        return $this->imageFile;
+        return $this->pictureName;
     }
 
-    public function setImageName(?string $imageName): void
+    /**
+     * @param string|null $pictureName
+     */
+    public function setPictureName(?string $pictureName): void
     {
-        $this->imageName = $imageName;
+        $this->pictureName = $pictureName;
     }
 
-    public function getImageName(): ?string
+    /**
+     * @return int|null
+     */
+    public function getPictureSize(): ?int
     {
-        return $this->imageName;
+        return $this->pictureSize;
     }
 
-    public function setImageSize(?int $imageSize): void
+    /**
+     * @param int|null $pictureSize
+     */
+    public function setPictureSize(?int $pictureSize): void
     {
-        $this->imageSize = $imageSize;
+        $this->pictureSize = $pictureSize;
     }
 
-    public function getImageSize(): ?int
-    {
-        return $this->imageSize;
-    }
-
+    /**
+     * @return \DateTime
+     */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
     }
 
+    /**
+     * @param \DateTime $updatedAt
+     */
     public function setUpdatedAt(\DateTime $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
 
+    /**
+     * @return int|null
+     */
     public function getViewCount(): ?int
     {
         return $this->viewCount;
     }
 
+    /**
+     * @param int $viewCount
+     *
+     * @return Page
+     */
     public function setViewCount(int $viewCount): self
     {
         $this->viewCount = $viewCount;
@@ -156,6 +199,9 @@ class Page
         return $this;
     }
 
+    /**
+     * @return Page
+     */
     public function addViewCount(): self
     {
         ++$this->viewCount;
@@ -171,6 +217,11 @@ class Page
         return $this->pieces;
     }
 
+    /**
+     * @param Piece $piece
+     *
+     * @return Page
+     */
     public function addPiece(Piece $piece): self
     {
         if (!$this->pieces->contains($piece)) {
@@ -181,6 +232,11 @@ class Page
         return $this;
     }
 
+    /**
+     * @param Piece $piece
+     *
+     * @return Page
+     */
     public function removePiece(Piece $piece): self
     {
         if ($this->pieces->contains($piece)) {
@@ -194,11 +250,17 @@ class Page
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function __toString()
     {
         return $this->getSlug();
     }
 
+    /**
+     * @return bool|string
+     */
     private function generateSlug()
     {
         return substr(base_convert(sha1(uniqid(mt_rand())), 16, 36), 0, 10);

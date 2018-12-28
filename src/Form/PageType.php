@@ -14,7 +14,7 @@ class PageType extends AbstractType
     {
         $builder
             ->add(
-                'imageFile',
+                'pictureFile',
                 VichImageType::class, [
                     'label' => 'Picture to reveal',
                 ]
