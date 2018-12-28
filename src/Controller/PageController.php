@@ -18,6 +18,8 @@ class PageController extends Controller
      * @param Request $request
      *
      * @return RedirectResponse|Response
+     *
+     * @throws \Exception
      */
     public function createAction(Request $request)
     {
@@ -30,7 +32,7 @@ class PageController extends Controller
             $em->persist($page);
             $em->flush();
 
-            return $this->redirectToRoute('user_login');
+            return $this->redirectToRoute('viewer', ['slug' => $page->getSlug()]);
         }
 
         return $this->render(
