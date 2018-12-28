@@ -1,7 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div class="picture-container">
+    <div class="picture-container"
+         style="
+                 width:{{ page.pictureDimensions.0 }}px;
+                 height:{{ page.pictureDimensions.1 }}px;
+         ">
         {% for piece in page.pieces %}
             <div class="piece"
                  style="

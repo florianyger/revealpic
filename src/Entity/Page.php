@@ -34,7 +34,7 @@ class Page
      *     minHeight = 200
      * )
      *
-     * @Vich\UploadableField(mapping="page_picture", fileNameProperty="pictureName", size="pictureSize")
+     * @Vich\UploadableField(mapping="page_picture", fileNameProperty="pictureName", size="pictureSize", dimensions="pictureDimensions")
      *
      * @var File
      */
@@ -53,6 +53,13 @@ class Page
      * @var int
      */
     private $pictureSize;
+
+    /**
+     * @ORM\Column(type="json")
+     *
+     * @var array
+     */
+    private $pictureDimensions;
 
     /**
      * @ORM\Column(type="datetime")
@@ -161,6 +168,22 @@ class Page
     public function setPictureSize(?int $pictureSize): void
     {
         $this->pictureSize = $pictureSize;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPictureDimensions(): array
+    {
+        return $this->pictureDimensions;
+    }
+
+    /**
+     * @param array $pictureDimensions
+     */
+    public function setPictureDimensions(array $pictureDimensions): void
+    {
+        $this->pictureDimensions = $pictureDimensions;
     }
 
     /**
