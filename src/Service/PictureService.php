@@ -4,11 +4,14 @@ namespace App\Service;
 
 use App\Entity\Page;
 use App\Entity\Piece;
+use App\Utils\PictureTrait;
 use Intervention\Image\Constraint;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class PictureService
 {
+    use PictureTrait;
+
     const NB_COLUMN = 7;
     const NB_LINE = 7;
     const PIECE_EXTENSION = '.jpg';
@@ -35,10 +38,8 @@ class PictureService
      */
     public function cutPictureInPieces($page): array
     {
-        $pictureDirectoryPath = join('/', [$this->picturesDirectoryPath, $page->getSlug()]);
-
         $image = Image::make(
-            join('/', [$pictureDirectoryPath, $page->getImageName()])
+            $this->getPiecePicturePath($page->getSlug(), $page->getImageName())
         )->widen(self::MAX_PICTURE_WIDTH, function (Constraint $constraint) {
             $constraint->upsize();
         })->heighten(self::MAX_PICTURE_HEIGHT, function (Constraint $constraint) {
@@ -65,7 +66,7 @@ class PictureService
 
                 $image
                     ->crop($width, $height, $leftPos, $topPos)
-                    ->save(join('/', [$pictureDirectoryPath, $imageName]))
+                    ->save($this->getPiecePicturePath($page->getSlug(), $imageName))
                 ;
 
                 $pieces[] = (new Piece())

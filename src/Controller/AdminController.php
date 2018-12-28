@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Utils\RenderImageTrait;
+use App\Utils\PictureTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class AdminController extends Controller
 {
-    use RenderImageTrait;
+    use PictureTrait;
 
     /**
      * @Method({"GET"})
@@ -31,6 +31,6 @@ class AdminController extends Controller
             throw new AccessDeniedException($slug);
         }
 
-        return $this->renderImage($slug, $filename);
+        return $this->renderPicture($slug, $filename);
     }
 }

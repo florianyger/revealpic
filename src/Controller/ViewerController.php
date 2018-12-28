@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Page;
 use App\Entity\Piece;
-use App\Utils\RenderImageTrait;
+use App\Utils\PictureTrait;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
  */
 class ViewerController extends Controller
 {
-    use RenderImageTrait;
+    use PictureTrait;
 
     /**
      * @Route("/{slug}", name="viewer")
@@ -93,6 +93,6 @@ class ViewerController extends Controller
             throw new AccessDeniedException($piece->getId());
         }
 
-        return $this->renderImage($piece->getPage()->getSlug(), $piece->getFilename());
+        return $this->renderPicture($piece->getPage()->getSlug(), $piece->getFilename());
     }
 }
